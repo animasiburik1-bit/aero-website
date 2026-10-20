@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>AERO — Situs Resmi</title>
+<style>
+:root {
+  --bg:#0b111c;
+  --panel:#121d2c;
+  --panel2:#182638;
+  --text:#eef5fc;
+  --muted:#9eafc3;
+  --cyan:#62d9ef;
+  --line:#28394d;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  line-height:1.6;
+}
+button,a { font:inherit; }
+button { cursor:pointer; }
+a { color:inherit; text-decoration:none; }
+header {
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(11,17,28,.96);
+  border-bottom:1px solid var(--line);
+}
+.nav {
+  max-width:1050px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo {
+  color:var(--cyan);
+  font-size:25px;
+  font-weight:800;
+  letter-spacing:4px;
+}
+.tagline {
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:1.5px;
+}
+.menu-wrap { position:relative; }
+.menu-button {
+  width:42px;
+  height:42px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel);
+  color:var(--text);
+  font-size:25px;
+}
+.dropdown {
+  position:absolute;
+  top:50px;
+  right:0;
+  width:190px;
+  padding:7px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:0 12px 30px #0006;
+}
+.dropdown[hidden] { display:none; }
+.dropdown button {
+  width:100%;
+  text-align:left;
+  padding:11px 12px;
+  border:0;
+  border-radius:8px;
+  color:var(--text);
+  background:transparent;
+}
+.dropdown button:hover { background:var(--panel2); }
+main {
+  max-width:1050px;
+  margin:auto;
+  padding:30px 20px 60px;
+}
+.page[hidden] { display:none; }
+.eyebrow {
+  color:var(--cyan);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.hero {
+  padding:clamp(25px,6vw,58px);
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:linear-gradient(135deg,#182b40,#101827 70%);
+  position:relative;
+  overflow:hidden;
+}
+.hero:after {
+  content:"A";
+  position:absolute;
+  right:15px;
+  bottom:-100px;
+  font-size:300px;
+  line-height:1;
+  font-weight:900;
+  color:#62d9ef08;
+  pointer-events:none;
+}
+.hero h1 {
+  max-width:650px;
+  margin:12px 0;
+  font-size:clamp(34px,7vw,58px);
+  line-height:1.1;
+  letter-spacing:-1.5px;
+}
+.hero p {
+  max-width:570px;
+  color:var(--muted);
+  margin:0;
+}
+.section-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:32px 0 14px;
+}
+h2 { font-size:22px; margin:0; }
+.small-label { color:var(--muted); font-size:12px; }
+.news-feature {
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--panel);
+  padding:24px;
+}
+.news-feature h3 { margin:8px 0; font-size:21px; }
+.news-feature p { margin:0; color:var(--muted); }
+.empty {
+  text-align:center;
+  padding:38px 20px;
+  border:1px dashed #34465b;
+  border-radius:16px;
+  background:#101927;
+}
+.empty-icon { font-size:32px; margin-bottom:8px; }
+.empty h3 { margin:5px 0; }
+.empty p { max-width:420px; margin:0 auto; color:var(--muted); }
+.article-list {
+  display:grid;
+  gap:12px;
+  margin-top:18px;
+}
+.article {
+  display:block;
+  padding:19px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--panel);
+}
+.article:hover { border-color:var(--cyan); }
+.article h3 { margin:6px 0; font-size:18px; }
+.article p { color:var(--muted); margin:0; }
+.about-card {
+  margin-top:20px;
+  padding:24px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:16px;
+}
+.about-card p { color:var(--muted); }
+footer {
+  border-top:1px solid var(--line);
+  padding:24px 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.news-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));
+  gap:16px;
+}
+.article {
+  overflow:hidden;
+  padding:0;
+  transition:transform .18s,border-color .18s;
+}
+.article:hover { transform:translateY(-3px); }
+.article-image {
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  background:#1b2a3d;
+}
+.article-image-placeholder {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  aspect-ratio:16/9;
+  background:linear-gradient(135deg,#1b3047,#111b2a);
+  color:#62d9ef;
+  font-size:30px;
+}
+.article-copy { padding:17px; }
+.article-copy h3 { line-height:1.35; }
+.article-meta {
+  color:var(--muted);
+  font-size:12px;
+  margin-top:9px;
+}
+.article-full-image {
+  display:block;
+  width:100%;
+  max-height:440px;
+  object-fit:cover;
+  border-radius:12px;
+  margin:18px 0;
+}
+.article-body { white-space:pre-wrap; line-height:1.85; }
+@media(max-width:520px) {
+  .news-grid { grid-template-columns:1fr; }
+}
+
+@media (max-width:520px) {
+  main { padding:20px 14px 42px; }
+  .nav { padding:12px 15px; }
+  .tagline { letter-spacing:.5px; }
+  .hero { padding:27px 21px; }
+  .hero:after { font-size:210px; bottom:-65px; }
+  .news-feature { padding:19px; }
+}
+
+/* AERO VISUAL UPGRADE */
+:root {
+  color-scheme: dark;
+  --aero-bg: #070b14;
+  --aero-panel: #0d1524;
+  --aero-line: rgba(105, 208, 255, .16);
+  --aero-cyan: #66dcff;
+  --aero-text: #edf6ff;
+  --aero-muted: #94a8bd;
+}
+html { scroll-behavior: smooth; }
+body {
+  background:
+    radial-gradient(ellipse at 50% -15%, rgba(22, 113, 158, .22), transparent 48%),
+    var(--aero-bg);
+  color: var(--aero-text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: rgba(102,220,255,.3); color: white; }
+a { transition: color .2s ease, opacity .2s ease; }
+a:hover { color: var(--aero-cyan); }
+header {
+  border-bottom: 1px solid var(--aero-line);
+  backdrop-filter: blur(16px);
+}
+header, nav, main, footer { box-sizing: border-box; }
+button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
+button {
+  transition: transform .2s ease, border-color .2s ease,
+              background .2s ease, box-shadow .2s ease;
+}
+button:hover { border-color: var(--aero-cyan); }
+button:active { transform: scale(.98); }
+main { animation: aero-enter .45s ease both; }
+h1, h2, h3 { line-height: 1.2; letter-spacing: -.035em; }
+h1 { text-wrap: balance; }
+p { text-wrap: pretty; }
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+.news-grid > *, .news-card, .article-card {
+  min-width: 0;
+}
+.news-card, .article-card, .news-grid article {
+  overflow: hidden;
+  border: 1px solid var(--aero-line);
+  border-radius: 16px;
+  background: linear-gradient(155deg, rgba(18,31,49,.98), rgba(10,16,28,.98));
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  transition: transform .22s ease, border-color .22s ease,
+              box-shadow .22s ease;
+}
+.news-card:hover, .article-card:hover, .news-grid article:hover {
+  transform: translateY(-4px);
+  border-color: rgba(102,220,255,.48);
+  box-shadow: 0 16px 38px rgba(0,0,0,.25);
+}
+.news-card img, .article-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #101d30;
+}
+.article-image-placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 150px;
+  aspect-ratio: 16 / 9;
+  background:
+    radial-gradient(ellipse at center, rgba(35,145,190,.25), transparent 65%),
+    linear-gradient(135deg, #101d30, #080d18);
+  color: var(--aero-cyan);
+  font-weight: 800;
+  letter-spacing: .22em;
+}
+.article-copy { padding: 18px; }
+.article-meta {
+  color: var(--aero-cyan);
+  font-size: .78rem;
+  letter-spacing: .06em;
+}
+.article-copy h2, .article-copy h3 {
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+.article-copy p {
+  color: var(--aero-muted);
+  font-size: .94rem;
+}
+.article-full-image {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin: 20px 0;
+}
+.article-body {
+  max-width: 760px;
+  color: #d4e0ee;
+  font-size: 1.04rem;
+  line-height: 1.95;
+  overflow-wrap: anywhere;
+}
+input, textarea, select {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+:focus-visible {
+  outline: 2px solid var(--aero-cyan);
+  outline-offset: 4px;
+}
+img { max-width: 100%; }
+@keyframes aero-enter {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 600px) {
+  body { font-size: 15px; }
+  .news-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .article-copy { padding: 15px; }
+  .article-copy h2, .article-copy h3 { font-size: 1.1rem; }
+  .article-body { font-size: 1rem; line-height: 1.85; }
+  .article-full-image { border-radius: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+
+/* AERO HOMEPAGE HERO */
+.aero-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 340px;
+  margin: 24px 0 34px;
+  padding: clamp(26px, 6vw, 54px);
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(102,220,255,.24);
+  border-radius: 22px;
+  background: linear-gradient(115deg, #101e31 0%, #0a1220 58%, #080d18 100%);
+  box-sizing: border-box;
+}
+.aero-hero-glow {
+  position: absolute;
+  z-index: -1;
+  width: 340px;
+  height: 340px;
+  right: -100px;
+  top: -80px;
+  border-radius: 50%;
+  background: rgba(35,175,225,.13);
+  filter: blur(38px);
+}
+.aero-hero-content { max-width: 620px; }
+.aero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #8bdfff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+.aero-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #66dcff;
+  box-shadow: 0 0 14px rgba(102,220,255,.8);
+}
+.aero-hero h1 {
+  margin: 24px 0 16px;
+  font-size: clamp(38px, 8vw, 68px);
+  line-height: 1.04;
+  letter-spacing: -.055em;
+  font-weight: 850;
+}
+.aero-hero h1 span {
+  color: #66dcff;
+  text-shadow: 0 0 30px rgba(45,190,240,.17);
+}
+.aero-hero-description {
+  max-width: 490px;
+  color: #a9bbcf;
+  font-size: 15px;
+  line-height: 1.85;
+}
+.aero-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 25px;
+}
+.aero-primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 46px;
+  padding: 0 19px;
+  border: 1px solid #66dcff;
+  border-radius: 9px;
+  background: #66dcff;
+  color: #06101a;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.aero-primary-button:hover {
+  background: #a4edff;
+  color: #06101a;
+  box-shadow: 0 0 25px rgba(102,220,255,.16);
+}
+.aero-hero-note {
+  color: #7890a8;
+  font-size: 9px;
+  letter-spacing: .13em;
+}
+.aero-hero-mark {
+  position: absolute;
+  right: 7%;
+  top: 50%;
+  transform: translateY(-58%);
+  color: rgba(130,220,255,.055);
+  font-size: clamp(140px, 25vw, 270px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.1em;
+  pointer-events: none;
+  user-select: none;
+}
+.aero-hero-mark span { color: rgba(102,220,255,.14); }
+.aero-hero-bottom {
+  position: absolute;
+  left: clamp(26px, 6vw, 54px);
+  right: clamp(26px, 6vw, 54px);
+  bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #617990;
+  font-size: 9px;
+  letter-spacing: .13em;
+}
+@media(max-width:600px) {
+  .aero-hero { min-height: 390px; padding: 27px 22px 52px; border-radius: 16px; }
+  .aero-hero h1 { font-size: clamp(39px, 11vw, 55px); }
+  .aero-hero-description { font-size: 14px; }
+  .aero-hero-mark { right: 3%; top: 18%; transform: none; font-size: 150px; }
+  .aero-hero-bottom { left: 22px; right: 22px; }
+  .aero-hero-note { font-size: 8px; }
+}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand" aria-label="AERO">
+      <div class="logo">AERO</div>
+      <div class="tagline">SITUS RESMI</div>
+    </div>
+    <div class="menu-wrap">
+      <button class="menu-button" id="menuButton"
+        aria-label="Buka menu" aria-expanded="false"
+        aria-controls="dropdown">⋮</button>
+      <nav class="dropdown" id="dropdown" hidden>
+        <button data-page="beranda">Beranda</button>
+        <button data-page="berita">Semua Berita</button>
+        <button data-page="tentang">Tentang AERO</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page" id="page-beranda">
+    <div class="hero">
+      <div class="eyebrow">Situs Resmi AERO</div>
+      <section class="aero-hero">
+  <div class="aero-hero-glow"></div>
+  <div class="aero-hero-content">
+    <div class="aero-eyebrow"><span class="aero-status-dot"></span> PUSAT INFORMASI ANTARIKSA</div>
+    <h1>Selamat datang<br>di <span>AERO.</span></h1>
+    <p class="aero-hero-description">
+      Ikuti perjalanan AERO, dari perkembangan proyek hingga kabar resmi terbaru.
+      Pembaruan misi dan hasil penelitian segera diumumkan.
+    </p>
+    <div class="aero-hero-actions">
+      <button class="aero-primary-button" type="button"
+        onclick="document.getElementById('page-beranda').querySelector('#latestNews').scrollIntoView({behavior:'smooth'})">
+        Jelajahi berita <span aria-hidden="true">↘</span>
+      </button>
+      <span class="aero-hero-note">MENJELAJAHI BATAS ANTARIKSA</span>
+    </div>
+  </div>
+  <div class="aero-hero-mark" aria-hidden="true">A<span>/</span></div>
+  <div class="aero-hero-bottom"><span>ANIMATION PROJECT</span><span>01 — AERO</span></div>
+</section>
+
+<div class="section-head">
+      <div>
+        <h2 id="berita-terbaru">Berita utama</h2>
+        <span class="small-label">LAPORAN RESMI · MISI ANTARIKSA</span>
+      </div>
+    </div>
+    <div id="featuredNews" class="news-feature">
+      <div class="eyebrow">MISI ANTARIKSA</div>
+      <h3>Memuat berita utama...</h3>
+      <p>Menyiapkan informasi terbaru dari AERO.</p>
+    </div>
+
+    <div class="section-head">
+      <h2>Berita terbaru</h2>
+      <button class="small-label" data-page="berita"
+        style="border:0;background:none;color:var(--cyan)">Lihat semua →</button>
+    </div>
+    <div id="latestNews"></div>
+  </section>
+
+  <section class="page" id="page-berita" hidden>
+    <button type="button" data-go-back
+      style="padding:9px 13px;margin-bottom:14px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text)">← Kembali</button>
+    <div class="eyebrow">Pusat informasi</div>
+    <h1 style="font-size:36px;margin:8px 0">Semua Berita</h1>
+    <p style="color:var(--muted);margin-top:0">Pengumuman, laporan misi, dan perkembangan penelitian antariksa.</p>
+    <div id="allNews"></div>
+  </section>
+
+  <section class="page" id="page-tentang" hidden>
+    <button type="button" data-go-back
+      style="padding:9px 13px;margin-bottom:14px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text)">← Kembali</button>
+    <div class="eyebrow">Tentang situs</div>
+    <h1 style="font-size:36px;margin:8px 0">Tentang AERO</h1>
+    <div class="about-card">
+      <h2>Badan Eksplorasi dan Riset Antariksa AERO</h2>
+      <p>AERO berfokus pada eksplorasi antariksa, penelitian planet, pengembangan teknologi, dan penyampaian informasi mengenai berbagai misi.</p>
+      <p>Informasi baru akan diterbitkan ketika sudah tersedia dan dikonfirmasi oleh pembuatnya.</p>
+    </div>
+  </section>
+
+  <section class="page" id="page-artikel" hidden>
+    <button id="backToNews"
+      style="padding:9px 13px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text)">← Kembali</button>
+    <article id="articleContent" class="about-card"></article>
+  </section>
+</main>
+
+<footer>
+  <div>AERO · Situs Resmi</div>
+  <div style="margin-top:5px">Laporan misi, hasil penelitian, dan pengumuman resmi AERO.</div>
+</footer>
+
+<script>
+let articles = [];
+
+const menuButton = document.getElementById("menuButton");
+const dropdown = document.getElementById("dropdown");
+
+let previousPage = "beranda";
+
+function showPage(name, remember = true) {
+  const current = document.querySelector(".page:not([hidden])");
+  const currentName = current ? current.id.replace("page-", "") : "beranda";
+
+  if (remember && currentName !== name && name !== "artikel") {
+    previousPage = currentName;
+  }
+
+  document.querySelectorAll(".page").forEach(page => {
+    page.hidden = page.id !== "page-" + name;
+  });
+
+  dropdown.hidden = true;
+  menuButton.setAttribute("aria-expanded", "false");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function goBack(fallback) {
+  const destination = fallback === "previous"
+    ? (previousPage || "beranda")
+    : (fallback || "beranda");
+
+  showPage(destination, false);
+  history.replaceState(null, "", "#" + destination);
+}
+
+function emptyMessage() {
+  return `<div class="empty">
+    <div class="empty-icon">▤</div>
+    <h3>Belum ada berita baru</h3>
+    <p>Berita resmi AERO akan muncul di sini setelah ada pengumuman atau pembaruan terbaru.</p>
+  </div>`;
+}
+
+
+async function loadArticles() {
+  try {
+    const response = await fetch("berita.json", { cache: "no-store" });
+    if (!response.ok) throw new Error("berita.json tidak dapat dibaca");
+    const data = await response.json();
+    if (!Array.isArray(data)) throw new Error("Format berita.json harus berupa daftar artikel");
+    articles = data.filter(a =>
+      a && a.id != null &&
+      typeof a.title === "string" &&
+      typeof a.body === "string"
+    ).map(a => ({ ...a, id: String(a.id) }));
+  } catch (error) {
+    console.error("Gagal memuat berita:", error);
+    articles = [];
+    document.getElementById("allNews").innerHTML =
+      '<div class="empty"><h3>Berita belum dapat dimuat</h3><p>Periksa file berita.json.</p></div>';
+  }
+  renderNews();
+}
+
+function renderNews() {
+  const realNews = articles.filter(a => a.id !== "welcome");
+  const featured = document.getElementById("featuredNews");
+
+  if (featured) {
+    if (realNews.length) {
+      const a = realNews[0];
+      featured.innerHTML = `
+        <div class="eyebrow">${escapeHtml(a.category || "Berita AERO")}</div>
+        <h3>${escapeHtml(a.title)}</h3>
+        <p>${escapeHtml(a.summary || "")}</p>
+        ${a.date ? `<div class="article-meta">${escapeHtml(a.date)}</div>` : ""}
+        <p><a class="featured-link" href="#artikel/${encodeURIComponent(a.id)}"
+          data-article="${escapeHtml(a.id)}">Baca selengkapnya →</a></p>`;
+    } else {
+      featured.innerHTML = `
+        <div class="eyebrow">BERITA AERO</div>
+        <h3>Belum ada berita utama</h3>
+        <p>Berita akan ditampilkan setelah tersedia di berita.json.</p>`;
+    }
+  }
+
+  document.getElementById("latestNews").innerHTML =
+    realNews.length ? makeList(realNews.slice(0, 3)) : emptyMessage();
+  document.getElementById("allNews").innerHTML =
+    realNews.length ? makeList(realNews) : emptyMessage();
+}
+
+function makeList(items) {
+  return `<div class="news-grid">${items.map(a => `
+    <a class="article" href="#artikel/${encodeURIComponent(a.id)}"
+       data-article="${escapeHtml(a.id)}">
+      ${a.image
+        ? `<img class="article-image" src="${escapeHtml(a.image)}" alt="${escapeHtml(a.title)}" loading="lazy">`
+        : `<div class="article-image-placeholder" aria-label="Gambar belum tersedia">AERO</div>`}
+      <div class="article-copy">
+        <div class="eyebrow">${escapeHtml(a.category || "Berita")}</div>
+        <h3>${escapeHtml(a.title)}</h3>
+        <p>${escapeHtml(a.summary || "")}</p>
+        ${a.date ? `<div class="article-meta">${escapeHtml(a.date)}</div>` : ""}
+      </div>
+    </a>`).join("")}</div>`;
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[ch]));
+}
+
+
+function openArticle(id) {
+  const activePage = document.querySelector(".page:not([hidden])");
+  if (activePage && activePage.id !== "page-artikel") previousPage = activePage.id.replace("page-", "");
+  const article = articles.find(a => a.id === id);
+  if (!article) {
+    showPage("berita");
+    return;
+  }
+  document.getElementById("articleContent").innerHTML = `
+    <div class="eyebrow">${escapeHtml(article.category || "Berita")}</div>
+    <h1>${escapeHtml(article.title)}</h1>
+    ${article.date ? `<div class="small-label">${escapeHtml(article.date)}</div>` : ""}
+    ${article.image ? `<img class="article-full-image" src="${escapeHtml(article.image)}" alt="${escapeHtml(article.title)}">` : ""}
+    <div class="article-body">${escapeHtml(article.body || article.summary || "")}</div>`;
+  showPage("artikel");
+}
+
+menuButton.addEventListener("click", () => {
+  dropdown.hidden = !dropdown.hidden;
+  menuButton.setAttribute("aria-expanded", String(!dropdown.hidden));
+});
+
+document.addEventListener("click", event => {
+  if (!event.target.closest(".menu-wrap")) {
+    dropdown.hidden = true;
+    menuButton.setAttribute("aria-expanded", "false");
+  }
+  const pageButton = event.target.closest("[data-page]");
+  if (pageButton) {
+    showPage(pageButton.dataset.page);
+    history.replaceState(null, "", "#" + pageButton.dataset.page);
+    return;
+  }
+  const articleLink = event.target.closest("[data-article]");
+  if (articleLink) {
+    event.preventDefault();
+    openArticle(articleLink.dataset.article);
+    history.replaceState(null, "", "#artikel/" + articleLink.dataset.article);
+  }
+});
+
+document.getElementById("backToNews").addEventListener("click", () => goBack("previous"));
+
+document.querySelectorAll("#page-berita [data-go-back], #page-tentang [data-go-back]").forEach(button => {
+  button.addEventListener("click", () => goBack("beranda"));
+});
+
+function loadRoute() {
+  const hash = location.hash.replace(/^#/, "");
+  if (hash.startsWith("artikel/")) {
+    openArticle(hash.slice("artikel/".length));
+  } else if (["berita", "tentang", "beranda"].includes(hash)) {
+    showPage(hash);
+  } else {
+    showPage("beranda");
+  }
+}
+
+window.addEventListener("hashchange", loadRoute);
+loadArticles();
+loadRoute();
+</script>
+</body>
+</html>
